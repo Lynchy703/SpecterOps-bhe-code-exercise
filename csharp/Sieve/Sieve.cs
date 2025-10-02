@@ -7,6 +7,11 @@ public interface ISieve
 
 public class SieveImplementation : ISieve
 {
+
+    //Segmented Version of Sieve. Same time complexity of original but handles larger numbers.
+    //Simple version would require too much space for larger numbers. 
+    // TimeComplexity: O(n log n) for simple vs segmented
+    // Space complexity O(√(n log n) + segmentSize)   vs   O(n log n) for simple sieve
     public long NthPrime(long n)
     {
         n++;
@@ -20,11 +25,12 @@ public class SieveImplementation : ISieve
         // Small primes up to sqrt(limit)
         int sqrtLimit = (int)Math.Sqrt(limit) + 1;
 
+
         //Get the lower limit ones that don't need to be segmented.
         var basePrimes = SimpleSieve(sqrtLimit);
 
         long count = 0;
-        int segmentSize = 1_000_000;
+        int segmentSize = 1000000;
 
         // Code Loops through and segments the sieve instead of one loop. This allows higher numbers since we dont run out of
         // memory in the long
@@ -34,6 +40,8 @@ public class SieveImplementation : ISieve
             bool[] isPrime = new bool[high - low + 1];
             Array.Fill(isPrime, true);
 
+
+            //Fill Array with basePrimes precalculated with SimpleSieve
             foreach (int p in basePrimes)
             {
                 long start = Math.Max((long)p * p, ((low + p - 1) / p) * p);
@@ -59,7 +67,7 @@ public class SieveImplementation : ISieve
         bool[] isPrime = new bool[limit + 1];
         Array.Fill(isPrime, true);
         isPrime[0] = isPrime[1] = false;
-        //Si
+        //Simple Sieve of Eratosthenes
         for (int p = 2; p * p <= limit; p++)
         {
             if (isPrime[p])
