@@ -19,11 +19,15 @@ public class SieveImplementation : ISieve
 
         // Small primes up to sqrt(limit)
         int sqrtLimit = (int)Math.Sqrt(limit) + 1;
+
+        //Get the lower limit ones that don't need to be segmented.
         var basePrimes = SimpleSieve(sqrtLimit);
 
         long count = 0;
         int segmentSize = 1_000_000;
 
+        // Code Loops through and segments the sieve instead of one loop. This allows higher numbers since we dont run out of
+        // memory in the long
         for (long low = 2; low <= limit; low += segmentSize)
         {
             long high = Math.Min(low + segmentSize - 1, limit);
@@ -55,7 +59,7 @@ public class SieveImplementation : ISieve
         bool[] isPrime = new bool[limit + 1];
         Array.Fill(isPrime, true);
         isPrime[0] = isPrime[1] = false;
-
+        //Si
         for (int p = 2; p * p <= limit; p++)
         {
             if (isPrime[p])
